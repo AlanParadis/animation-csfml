@@ -2,6 +2,8 @@
 
 Animation system written in C with CSFML
 
+The animation system is only [Animation.c](https://github.com/AlanParadis/animation-csfml/blob/master/Animation.c) and [Animation.h](https://github.com/AlanParadis/animation-csfml/blob/master/Animation.h)
+
 ## How to use
 Create a new animation with :
 ```c
