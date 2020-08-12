@@ -45,7 +45,7 @@ All animation has there origin center in the middle and cannot be changed.
 
 ## Acknowledgements
 
-[License](https://dbad-license.org/): DBDA
+License: [DBDA](https://dbad-license.org/)
 
 This library uses and is based on [SFML](http://www.sfml-dev.org/ "Simple and Fast Multimedia Library") and [CSFML](http://www.sfml-dev.org/download/csfml/).
 
