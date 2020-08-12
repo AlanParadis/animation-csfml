@@ -7,7 +7,6 @@ Animation* anim;
 
 void GameLoad()
 {
-	//sfVector2u vec = { 0,0 };
 	anim = AnimationCreate((sfVector2u) { 256, 256 }, 3);
 	AnimationSetSpriteSheet(
 		anim,
@@ -18,8 +17,6 @@ void GameLoad()
 	AnimationPlay(anim, Default);
 	AnimationSetFramerate(anim, 1);
 	AnimationMove(anim, (sfVector2f) { 256 / 2, 256 / 2 });
-	//anim->Duration = 10;
-	//printf("%f\n", AnimationGetDuration(anim));
 }
 void GameUpdate(float _dt)
 {
