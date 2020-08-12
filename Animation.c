@@ -36,21 +36,77 @@ Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb)
 	return anim;
 }
 
+static void AnimationFrameUpdate(Animation* _anim)
+{
+	// The position of the top left corner of the next frame in the texture
+	sfVector2i framePos = {
+			_anim->FrameSize.x * (int)_anim->CurrentFrame,
+			(_anim->FrameSize.y * (int)_anim->CurrentFrame) };
+
+	// Select the next frame according to the sprite sheet structure
+	if (_anim->SpriteSheetStructure == "horizontal")
+	{
+		sfSprite_setTextureRect(
+			_anim->Sprite,
+			(sfIntRect) {
+				framePos.x,
+				0,
+				_anim->FrameSize.x,
+				_anim->FrameSize.y });
+	}
+	else if (_anim->SpriteSheetStructure == "vertical")
+	{
+		sfSprite_setTextureRect(
+			_anim->Sprite,
+			(sfIntRect) {
+				0,
+				framePos.y,
+				_anim->FrameSize.x,
+				_anim->FrameSize.y });
+	}
+	else if (_anim->SpriteSheetStructure == "block")
+	{
+		// Block length in pixel
+		sfVector2i blockPixelSize = {
+			_anim->BlockLength.x * (int)_anim->FrameSize.x,
+			_anim->BlockLength.y * (int)_anim->FrameSize.y
+		};
+
+		sfIntRect frameRect = {
+			framePos.x % blockPixelSize.x,
+			framePos.y / blockPixelSize.y * _anim->FrameSize.y,
+			_anim->FrameSize.x,
+			_anim->FrameSize.y
+		};
+
+		sfSprite_setTextureRect(_anim->Sprite, frameRect);
+	}
+}
+
 void AnimationUpdate(Animation* _anim, float _dt)
 {
 	// Flip sprite according to the state of the animation
 	if (_anim->State & FlipX && _anim->State & FlipY)
+	{
 		sfSprite_setScale(_anim->Sprite,
 			(sfVector2f) { -_anim->Scale.x, -_anim->Scale.y });
+	}
 	else if (_anim->State & FlipX)
+	{
 		sfSprite_setScale(_anim->Sprite,
 			(sfVector2f) { -_anim->Scale.x, _anim->Scale.y });
+	}
 	else if (_anim->State & FlipY)
+	{
 		sfSprite_setScale(_anim->Sprite,
 			(sfVector2f) { _anim->Scale.x, -_anim->Scale.y });
+	}
 	else
+	{
 		sfSprite_setScale(_anim->Sprite,
 			(sfVector2f) { _anim->Scale.x, _anim->Scale.y });
+	}
+		
 
 	if (_anim->IsPlaying)
 	{
@@ -118,49 +174,7 @@ void AnimationUpdate(Animation* _anim, float _dt)
 			}
 		}
 
-		// The position of the top left corner of the next frame in the texture
-		sfVector2i framePos = {
-				_anim->FrameSize.x * (int)_anim->CurrentFrame,
-				(_anim->FrameSize.y * (int)_anim->CurrentFrame) };
-
-		// Select the next frame according to the sprite sheet structure
-		if (_anim->SpriteSheetStructure == "horizontal")
-		{
-			sfSprite_setTextureRect(
-				_anim->Sprite,
-				(sfIntRect) {
-					framePos.x,
-					0,
-					_anim->FrameSize.x,
-					_anim->FrameSize.y });
-		}
-		else if (_anim->SpriteSheetStructure == "vertical")
-		{
-			sfSprite_setTextureRect(
-				_anim->Sprite,
-				(sfIntRect) {
-					0,
-					framePos.y,
-					_anim->FrameSize.x,
-					_anim->FrameSize.y });
-		}
-		else if (_anim->SpriteSheetStructure == "block")
-		{
-			// Block length in pixel
-			sfVector2i blockPixelSize = {
-				_anim->BlockLength.x * (int)_anim->FrameSize.x,
-				_anim->BlockLength.y * (int)_anim->FrameSize.y
-			};
-
-			sfIntRect frameRect = {
-				framePos.x % blockPixelSize.x,
-				framePos.y / blockPixelSize.y * _anim->FrameSize.y,
-				_anim->FrameSize.x,
-				_anim->FrameSize.y
-			};
-
-			sfSprite_setTextureRect(_anim->Sprite, frameRect);
-		}
+		AnimationFrameUpdate(_anim);
 	}
 }
 
@@ -204,6 +218,7 @@ void AnimationRewind(Animation* _anim)
 		_anim->Clock = _anim->Duration;
 		_anim->CurrentFrame = _anim->FramesNb - 1;
 	}
+	AnimationFrameUpdate(_anim);
 }
 
 void AnimationStop(Animation* _anim)
@@ -216,6 +231,7 @@ void AnimationStop(Animation* _anim)
 		_anim->Clock = _anim->Duration;
 		_anim->CurrentFrame = _anim->FramesNb - 1;
 	}
+	AnimationFrameUpdate(_anim);
 }
 
 Animation* AnimationCopy(const Animation* _animation)

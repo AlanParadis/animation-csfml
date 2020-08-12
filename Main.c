@@ -39,29 +39,19 @@ int main(int argc, char* argv[], char* envp[])
 	// setup CSFML
 	sfClock* deltaClock = sfClock_create();
 	sfRenderWindow* window = createRenderWindow(1280, 720, 32, "Animation");
-	sfEvent event;
+	sfRenderWindow_setKeyRepeatEnabled(window, sfFalse);
 
 	GameLoad();
 
 	while (sfRenderWindow_isOpen(window))
 	{
-
 		// get deltatime
 		float dt = sfTime_asSeconds(sfClock_restart(deltaClock));
-
-		// close the window when the user wishes
-		while (sfRenderWindow_pollEvent(window, &event))
-		{
-			if (event.type == sfEvtClosed)
-			{
-				sfRenderWindow_close(window);
-			}
-		}
 
 		if (dt < 1)
 		{
 			// ↓ update game ↓
-			GameUpdate(dt);
+			GameUpdate(dt, window);
 		}
 		// clean the window
 		sfRenderWindow_clear(window, sfBlack);

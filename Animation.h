@@ -50,7 +50,14 @@ typedef struct
 Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb);
 
 //////////////////////////////////////////////////////////////
-/// @brief Update a animation
+/// @brief Update an animation sprite with its current frame
+/// 
+/// @param _anim Animation object
+//////////////////////////////////////////////////////////////
+static void AnimationFrameUpdate(Animation* _anim);
+
+//////////////////////////////////////////////////////////////
+/// @brief Update an animation
 /// 
 /// @param _anim Animation object
 /// 
@@ -59,7 +66,7 @@ Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb);
 void AnimationUpdate(Animation* _anim, float _dt);
 
 //////////////////////////////////////////////////////////////
-/// @brief Draw a animation
+/// @brief Draw an animation
 /// 
 /// @param _window Render window object
 /// 
@@ -81,7 +88,7 @@ void AnimationDraw(
 void AnimationDestroy(Animation* _anim);
 
 //////////////////////////////////////////////////////////////
-/// @brief Play a animation with the given state
+/// @brief Play an animation with the given state
 /// 
 /// @param _anim Animation object
 /// 
@@ -90,28 +97,28 @@ void AnimationDestroy(Animation* _anim);
 void AnimationPlay(Animation* _anim, unsigned char _state);
 
 //////////////////////////////////////////////////////////////
-/// @brief Pause a animation
+/// @brief Pause an animation
 /// 
 /// @param _anim Animation object
 //////////////////////////////////////////////////////////////
 void AnimationPause(Animation* _anim);
 
 //////////////////////////////////////////////////////////////
-/// @brief Rewind a animation
+/// @brief Rewind an animation
 /// 
 /// @param _anim Animation object
 //////////////////////////////////////////////////////////////
 void AnimationRewind(Animation* _anim);
 
 //////////////////////////////////////////////////////////////
-/// @brief Stop a animation (=pause and rewind)
+/// @brief Stop an animation (=pause and rewind)
 /// 
 /// @param _anim Animation object
 //////////////////////////////////////////////////////////////
 void AnimationStop(Animation* _anim);
 
 //////////////////////////////////////////////////////////////
-/// @brief Get the duration of a animation
+/// @brief Get the duration of an animation
 /// 
 /// @param _anim Animation object
 /// 
@@ -120,7 +127,7 @@ void AnimationStop(Animation* _anim);
 float AnimationGetDuration(const Animation* _anim);
 
 //////////////////////////////////////////////////////////////
-/// @brief Get the frame that the animation is playing
+/// @brief Get the frame that an animation is playing
 /// 
 /// @param _anim Animation object
 /// 
@@ -129,7 +136,7 @@ float AnimationGetDuration(const Animation* _anim);
 unsigned char AnimationGetCurrentFrame(const Animation* _anim);
 
 //////////////////////////////////////////////////////////////
-/// @brief Tell if a animation is playing
+/// @brief Tell if an animation is playing
 /// 
 /// @param _anim Animation object
 /// 
@@ -138,7 +145,7 @@ unsigned char AnimationGetCurrentFrame(const Animation* _anim);
 sfBool AnimationIsPlaying(const Animation* _anim);
 
 //////////////////////////////////////////////////////////////
-/// @brief Get the state of a animation
+/// @brief Get the state of an animation
 /// 
 /// @param _anim Animation object
 /// 
@@ -147,7 +154,7 @@ sfBool AnimationIsPlaying(const Animation* _anim);
 unsigned char AnimationGetState(const Animation* _anim);
 
 //////////////////////////////////////////////////////////////
-/// @brief Get the frame size of animation
+/// @brief Get the frame size of an animation
 /// 
 /// @param _anim Animation object
 /// 
@@ -156,7 +163,7 @@ unsigned char AnimationGetState(const Animation* _anim);
 sfVector2u AnimationGetFrameSize(Animation* _anim);
 
 //////////////////////////////////////////////////////////////
-/// @brief Get the frames number
+/// @brief Get the frames number of an animation
 /// 
 /// @param _anim Animation object
 /// 
@@ -187,7 +194,7 @@ void AnimationSetSpriteSheet(
 	sfVector2u* _blockLength);
 
 //////////////////////////////////////////////////////////////
-/// @brief Set the duration of a animation 
+/// @brief Set the duration of an animation 
 /// 
 /// @param _anim Animation object
 /// 
@@ -196,7 +203,7 @@ void AnimationSetSpriteSheet(
 void AnimationSetDuration(Animation* _anim, float _duration);
 
 //////////////////////////////////////////////////////////////
-/// @brief Set the frame rate of a animation
+/// @brief Set the frame rate of an animation
 /// 
 /// Calculate and set duration according to the wanted frame rate.
 /// 
@@ -207,7 +214,7 @@ void AnimationSetDuration(Animation* _anim, float _duration);
 void AnimationSetFramerate(Animation* _anim, float _framerate);
 
 //////////////////////////////////////////////////////////////
-/// @brief Set the sate of a animation
+/// @brief Set the sate of an animation
 /// 
 /// @param _anim Animation object
 /// 
@@ -216,7 +223,7 @@ void AnimationSetFramerate(Animation* _anim, float _framerate);
 void AnimationSetState(Animation* _anim, unsigned char _state);
 
 //////////////////////////////////////////////////////////////
-/// @brief Set the frame size of a animation
+/// @brief Set the frame size of an animation
 /// 
 /// @param _anim Animation object
 /// 
@@ -225,7 +232,7 @@ void AnimationSetState(Animation* _anim, unsigned char _state);
 void AnimationSetFrameSize(Animation* _anim, sfVector2u _frameSize);
 
 //////////////////////////////////////////////////////////////
-/// @brief Set the frames number of a animation
+/// @brief Set the frames number of an animation
 /// 
 /// @param _anim Animation object
 /// 
@@ -234,7 +241,7 @@ void AnimationSetFrameSize(Animation* _anim, sfVector2u _frameSize);
 void AnimationSetFramesNb(Animation* _anim, unsigned char _framesNb);
 
 //////////////////////////////////////////////////////////////
-/// @brief Get the frame rate of a animation
+/// @brief Get the frame rate of an animation
 /// 
 /// Calculate frame rate from the duration of the animation.
 /// 
@@ -255,7 +262,7 @@ float AnimationGetFramerate(Animation* _anim);
 Animation* AnimationCopy(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Set the position of a animation
+/// @brief Set the position of an animation
 ///
 /// This function completely overwrites the previous position.
 /// See AnimationMove to apply an offset based on the previous position instead.
@@ -268,7 +275,7 @@ Animation* AnimationCopy(const Animation* _animation);
 void AnimationSetPosition(Animation* _animation, sfVector2f _position);
 
 ////////////////////////////////////////////////////////////
-/// @brief Set the orientation of a animation
+/// @brief Set the orientation of an animation
 ///
 /// This function completely overwrites the previous rotation.
 /// See AnimationRotate to add an angle based on the previous rotation instead.
@@ -281,7 +288,7 @@ void AnimationSetPosition(Animation* _animation, sfVector2f _position);
 void AnimationSetRotation(Animation* _animation, float _angle);
 
 ////////////////////////////////////////////////////////////
-/// @brief Set the scale factors of a animation
+/// @brief Set the scale factors of an animation
 ///
 /// This function completely overwrites the previous scale.
 /// See AnimationScale to add a factor based on the previous scale instead.
@@ -294,7 +301,7 @@ void AnimationSetRotation(Animation* _animation, float _angle);
 void AnimationSetScale(Animation* _animation, sfVector2f _scale);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the position of a animation
+/// @brief Get the position of an animation
 ///
 /// @param _animation Animation object
 ///
@@ -304,7 +311,7 @@ void AnimationSetScale(Animation* _animation, sfVector2f _scale);
 sfVector2f AnimationGetPosition(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the orientation of a animation
+/// @brief Get the orientation of an animation
 ///
 /// The rotation is always in the range [0, 360].
 ///
@@ -316,7 +323,7 @@ sfVector2f AnimationGetPosition(const Animation* _animation);
 float AnimationGetRotation(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the current scale of a animation
+/// @brief Get the current scale of an animation
 ///
 /// @param _animation Animation object
 ///
@@ -326,7 +333,7 @@ float AnimationGetRotation(const Animation* _animation);
 sfVector2f AnimationGetScale(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the local origin of a animation
+/// @brief Get the local origin of an animation
 ///
 /// @param _animation Animation object
 ///
@@ -336,7 +343,7 @@ sfVector2f AnimationGetScale(const Animation* _animation);
 sfVector2f AnimationGetOrigin(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Move a animation by a given offset
+/// @brief Move an animation by a given offset
 ///
 /// This function adds to the current position of the object,
 /// unlike AnimationSetPosition which overwrites it.
@@ -349,7 +356,7 @@ sfVector2f AnimationGetOrigin(const Animation* _animation);
 void AnimationMove(Animation* _animation, sfVector2f _offset);
 
 ////////////////////////////////////////////////////////////
-/// @brief Rotate a animation
+/// @brief Rotate an animation
 ///
 /// This function adds to the current rotation of the object,
 /// unlike AnimationSetRotation which overwrites it.
@@ -362,7 +369,7 @@ void AnimationMove(Animation* _animation, sfVector2f _offset);
 void AnimationRotate(Animation* _animation, float _angle);
 
 ////////////////////////////////////////////////////////////
-/// @brief Scale a animation
+/// @brief Scale an animation
 ///
 /// This function multiplies the current scale of the object,
 /// unlike AnimationSetScale which overwrites it.
@@ -375,7 +382,7 @@ void AnimationRotate(Animation* _animation, float _angle);
 void AnimationScale(Animation* _animation, sfVector2f _factors);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the combined transform of a animation
+/// @brief Get the combined transform of an animation
 ///
 /// @param _animation Animation object
 ///
@@ -385,7 +392,7 @@ void AnimationScale(Animation* _animation, sfVector2f _factors);
 sfTransform AnimationGetTransform(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the inverse of the combined transform of a animation
+/// @brief Get the inverse of the combined transform of an animation
 ///
 /// @param _animation Animation object
 ///
@@ -395,7 +402,7 @@ sfTransform AnimationGetTransform(const Animation* _animation);
 sfTransform AnimationGetInverseTransform(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Set the global color of a animation
+/// @brief Set the global color of an animation
 ///
 /// This color is modulated (multiplied) with the sprite's texture of the 
 /// animation. It can be used to colorize the animation, or change its global 
@@ -410,7 +417,7 @@ sfTransform AnimationGetInverseTransform(const Animation* _animation);
 void AnimationSetColor(Animation* _animation, sfColor _color);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the source sprite sheet texture of a animation
+/// @brief Get the source sprite sheet texture of an animation
 ///
 /// If the animation has no source sprite sheet texture,
 /// a NULL pointer is returned.
@@ -425,7 +432,7 @@ void AnimationSetColor(Animation* _animation, sfColor _color);
 const sfTexture* AnimationGetSpriteSheetTexture(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the global color of a animation
+/// @brief Get the global color of an animation
 ///
 /// @param _animation Animation object
 ///
@@ -435,7 +442,7 @@ const sfTexture* AnimationGetSpriteSheetTexture(const Animation* _animation);
 sfColor AnimationGetColor(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the local bounding rectangle of a animation
+/// @brief Get the local bounding rectangle of an animation
 ///
 /// The returned rectangle is in local coordinates, which means
 /// that it ignores the transformations (translation, rotation,
@@ -451,7 +458,7 @@ sfColor AnimationGetColor(const Animation* _animation);
 sfFloatRect AnimationGetLocalBounds(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
-/// @brief Get the global bounding rectangle of a animation
+/// @brief Get the global bounding rectangle of an animation
 ///
 /// The returned rectangle is in global coordinates, which means
 /// that it takes in account the transformations (translation,
