@@ -36,7 +36,7 @@ This animation system support 5 differents sates :
 Animation has the same function as standard sfSprite but the name format is different.
 The function are "Animation" followed by the PascalCase name of the function:
 
-example : `type AnimationThisIsAFunction(type _arg,..)`
+example : `type AnimationThisIsAFunction(type _arg,...)`
 
 See an example of an animation and interaction with the animation in [Game.c](https://github.com/AlanParadis/animation-csfml/blob/master/Game.c)
 
