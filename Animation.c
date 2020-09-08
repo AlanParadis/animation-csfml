@@ -74,7 +74,7 @@ static void AnimationFrameUpdate(Animation* _anim)
 
 		sfIntRect frameRect = {
 			framePos.x % blockPixelSize.x,
-			framePos.y / blockPixelSize.y * _anim->FrameSize.y,
+			(int)ceil(_anim->CurrentFrame/ _anim->BlockLength.x) * _anim->FrameSize.y,
 			_anim->FrameSize.x,
 			_anim->FrameSize.y
 		};
