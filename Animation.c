@@ -453,6 +453,7 @@ void AnimationRotate(Animation* _animation, float _angle)
 void AnimationScale(Animation* _animation, sfVector2f _factors)
 {
 	sfSprite_scale(_animation->Sprite, _factors);
+	_animation->Scale = _factors;
 }
 
 void AnimationSetColor(Animation* _animation, sfColor _color)
