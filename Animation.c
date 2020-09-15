@@ -32,6 +32,8 @@ Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb)
 		(sfVector2f) {
 		(float)anim->FrameSize.x / 2,
 		(float)anim->FrameSize.y / 2 });
+	anim->CurrentFrame = 0;
+	anim->SpriteSheetStructure = malloc(15);
 
 	return anim;
 }
@@ -191,6 +193,7 @@ void AnimationDestroy(Animation* _anim)
 {
 	sfTexture_destroy((sfTexture*)_anim->SpriteSheet);
 	sfSprite_destroy(_anim->Sprite);
+	free(_anim->SpriteSheetStructure);
 	free(_anim);
 }
 
@@ -359,7 +362,7 @@ void AnimationSetSpriteSheet(
 	else
 		_anim->BlockLength = (sfVector2u){ 0, 0 };
 
-	_anim->SpriteSheetStructure = (char*)_structure;
+	strcpy_s(_anim->SpriteSheetStructure,15,_structure);
 
 	// Surface area for the sprite sheet
 	const sfIntRect area;
