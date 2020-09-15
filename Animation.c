@@ -236,11 +236,22 @@ void AnimationStop(Animation* _anim)
 
 Animation* AnimationCopy(const Animation* _animation)
 {
-	Animation* dest = malloc(sizeof(_animation));
+	Animation* dest = malloc(sizeof(*_animation));
 	if (dest != NULL)
-		memcpy(dest, _animation, sizeof(_animation));
+	{
+		memcpy(dest, _animation, sizeof(*_animation));
+		dest->Sprite = sfSprite_copy(_animation->Sprite);
+		dest->SpriteSheet = sfTexture_copy(_animation->SpriteSheet);
+		dest->SpriteSheetStructure = malloc(15);
+		strcpy_s(
+			dest->SpriteSheetStructure,
+			15,
+			_animation->SpriteSheetStructure);
+	}
 	else
+	{
 		printf("Error during copying animation !");
+	}
 	return dest;
 }
 
