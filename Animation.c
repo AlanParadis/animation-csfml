@@ -46,7 +46,7 @@ static void AnimationFrameUpdate(Animation* _anim)
 			(_anim->FrameSize.y * (int)_anim->CurrentFrame) };
 
 	// Select the next frame according to the sprite sheet structure
-	if (_anim->SpriteSheetStructure == "horizontal")
+	if (strcmp(_anim->SpriteSheetStructure, "horizontal") == 0)
 	{
 		sfSprite_setTextureRect(
 			_anim->Sprite,
@@ -56,7 +56,7 @@ static void AnimationFrameUpdate(Animation* _anim)
 				_anim->FrameSize.x,
 				_anim->FrameSize.y });
 	}
-	else if (_anim->SpriteSheetStructure == "vertical")
+	else if (strcmp(_anim->SpriteSheetStructure, "vertical") == 0)
 	{
 		sfSprite_setTextureRect(
 			_anim->Sprite,
@@ -66,7 +66,7 @@ static void AnimationFrameUpdate(Animation* _anim)
 				_anim->FrameSize.x,
 				_anim->FrameSize.y });
 	}
-	else if (_anim->SpriteSheetStructure == "block")
+	else if (strcmp(_anim->SpriteSheetStructure, "block") == 0)
 	{
 		// Block length in pixel
 		sfVector2i blockPixelSize = {
@@ -76,7 +76,7 @@ static void AnimationFrameUpdate(Animation* _anim)
 
 		sfIntRect frameRect = {
 			framePos.x % blockPixelSize.x,
-			(int)ceil(_anim->CurrentFrame/ _anim->BlockLength.x) * _anim->FrameSize.y,
+			(int)ceil(_anim->CurrentFrame / _anim->BlockLength.x)* _anim->FrameSize.y,
 			_anim->FrameSize.x,
 			_anim->FrameSize.y
 		};
@@ -367,8 +367,8 @@ void AnimationSetSpriteSheet(
 	// Surface area for the sprite sheet
 	const sfIntRect area;
 
-	// Calculate surface area according to the sprite sheet structure
-	if (_anim->SpriteSheetStructure == "horizontal")
+	/// Calculate surface area according to the sprite sheet structure
+	if (strcmp(_anim->SpriteSheetStructure, "horizontal") == 0)
 	{
 		*(sfIntRect*)&area = (sfIntRect){
 			_anim->AnimationOffset.x,
@@ -377,7 +377,7 @@ void AnimationSetSpriteSheet(
 			_anim->FrameSize.y
 		};
 	}
-	else if (_anim->SpriteSheetStructure == "vertical")
+	else if (strcmp(_anim->SpriteSheetStructure, "vertical") == 0)
 	{
 		*(sfIntRect*)&area = (sfIntRect){
 			_anim->AnimationOffset.x,
@@ -386,7 +386,7 @@ void AnimationSetSpriteSheet(
 			_anim->FrameSize.y * (int)_anim->FramesNb
 		};
 	}
-	else if (_anim->SpriteSheetStructure == "block")
+	else if (strcmp(_anim->SpriteSheetStructure, "block")  == 0)
 	{
 		*(sfIntRect*)&area = (sfIntRect){
 			_anim->AnimationOffset.x,
