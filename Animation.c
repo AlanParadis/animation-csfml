@@ -6,6 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+//////////////////////////////////////////////////////////////
+/// @brief Update an animation sprite with its current frame
+/// 
+/// @param _anim Animation object
+//////////////////////////////////////////////////////////////
+static void AnimationFrameUpdate(Animation* _anim);
+
 Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb)
 {
 	Animation* anim = malloc(sizeof(Animation));

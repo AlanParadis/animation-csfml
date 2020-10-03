@@ -50,13 +50,6 @@ typedef struct
 Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb);
 
 //////////////////////////////////////////////////////////////
-/// @brief Update an animation sprite with its current frame
-/// 
-/// @param _anim Animation object
-//////////////////////////////////////////////////////////////
-static void AnimationFrameUpdate(Animation* _anim);
-
-//////////////////////////////////////////////////////////////
 /// @brief Update an animation
 /// 
 /// @param _anim Animation object
