@@ -6,36 +6,36 @@
 #include <SFML/Graphics.h>
 
 /// @brief Differents possible states of playing a animation
-/// (Default, Looped, Reversed, FlipX, FlipY)
+/// (Default, LOOPED, REVERSED, FLIP_X, FLIP_Y)
 enum State
 {
 	/// @brief Default state
-	Default = 0x01,
+	DEFAULT = 0x01,
 	/// @brief Set animation in loop
-	Looped = 0x02,
+	LOOPED = 0x02,
 	/// @brief Reverse the animation order
-	Reversed = 0x04,
+	REVERSED = 0x04,
 	/// @brief Apply a horizontal flip
-	FlipX = 0x08,
+	FLIP_X = 0x08,
 	/// @brief Apply a vertical flip
-	FlipY = 0x10
+	FLIP_Y = 0x10
 };
 
 typedef struct
 {
-	float Clock;
-	unsigned char State;
-	sfBool IsPlaying;
-	float Duration;
-	sfTexture* SpriteSheet;
-	sfSprite* Sprite;
-	sfVector2u FrameSize;
-	unsigned char FramesNb;
-	unsigned char CurrentFrame;
-	char* SpriteSheetStructure;
-	sfVector2u AnimationOffset;
-	sfVector2u BlockLength;
-	sfVector2f Scale;
+	float clock;
+	unsigned char state;
+	sfBool isPlaying;
+	float duration;
+	sfTexture* spriteSheet;
+	sfSprite* sprite;
+	sfVector2u frameSize;
+	unsigned char framesNb;
+	unsigned char currentFrame;
+	char* spriteSheetStructure;
+	sfVector2u animationOffset;
+	sfVector2u blockLength;
+	sfVector2f scale;
 }Animation;
 
 //////////////////////////////////////////////////////////////

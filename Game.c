@@ -15,7 +15,7 @@ void GameLoad()
 		"horizontal",
 		NULL,
 		NULL);
-	AnimationPlay(anim, Default | Looped);
+	AnimationPlay(anim, DEFAULT | LOOPED);
 	AnimationSetFramerate(anim, 8);
 	AnimationMove(anim, (sfVector2f) { 256 / 2, 256 / 2 });
 }
