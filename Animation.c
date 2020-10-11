@@ -15,7 +15,7 @@ static void AnimationFrameUpdate(Animation* _anim);
 
 Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb)
 {
-	Animation* anim = malloc(sizeof(Animation));
+	Animation* anim = (Animation*) malloc(sizeof(Animation));
 	if (anim == NULL)
 	{
 		printf("Error during memory allocation !");
@@ -250,9 +250,9 @@ Animation* AnimationCopy(const Animation* _animation)
 	if (dest != NULL)
 	{
 		memcpy(dest, _animation, sizeof(*_animation));
-		dest->sprite = sfSprite_copy(_animation->sprite);
-		dest->spriteSheet = sfTexture_copy(_animation->spriteSheet);
-		dest->spriteSheetStructure = malloc(15);
+		dest->Sprite = sfSprite_copy(_animation->Sprite);
+		dest->SpriteSheet = sfTexture_copy(_animation->SpriteSheet);
+		dest->SpriteSheetStructure = malloc(15);
 		strcpy_s(
 			dest->spriteSheetStructure,
 			15,
