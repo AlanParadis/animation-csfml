@@ -270,10 +270,14 @@ Animation* AnimationCopy(const Animation* _animation)
 		dest->sprite = sfSprite_copy(_animation->sprite);
 		dest->spriteSheet = sfTexture_copy(_animation->spriteSheet);
 		dest->spriteSheetStructure = (char*) malloc(15);
-		strcpy_s(
-			dest->spriteSheetStructure,
-			15,
-			_animation->spriteSheetStructure);
+		if (dest->spriteSheetStructure != NULL)
+		{
+			strcpy_s(
+				dest->spriteSheetStructure,
+				15,
+				_animation->spriteSheetStructure);
+		}
+		
 	}
 	else
 	{
