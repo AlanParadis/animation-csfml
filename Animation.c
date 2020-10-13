@@ -6,6 +6,23 @@
 #include <stdlib.h>
 #include <string.h>
 
+struct Animation
+{
+	float clock;
+	unsigned char state;
+	sfBool isPlaying;
+	float duration;
+	sfTexture* spriteSheet;
+	sfSprite* sprite;
+	sfVector2u frameSize;
+	unsigned char framesNb;
+	unsigned char currentFrame;
+	char* spriteSheetStructure;
+	sfVector2u animationOffset;
+	sfVector2u blockLength;
+	sfVector2f scale;
+};
+
 //////////////////////////////////////////////////////////////
 /// @brief Update an animation sprite with its current frame
 /// 

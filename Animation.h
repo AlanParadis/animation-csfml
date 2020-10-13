@@ -21,22 +21,7 @@ enum State
 	FLIP_Y = 0x10
 };
 
-typedef struct
-{
-	float clock;
-	unsigned char state;
-	sfBool isPlaying;
-	float duration;
-	sfTexture* spriteSheet;
-	sfSprite* sprite;
-	sfVector2u frameSize;
-	unsigned char framesNb;
-	unsigned char currentFrame;
-	char* spriteSheetStructure;
-	sfVector2u animationOffset;
-	sfVector2u blockLength;
-	sfVector2f scale;
-}Animation;
+typedef struct Animation Animation;
 
 //////////////////////////////////////////////////////////////
 /// @brief Create a new animation
