@@ -40,7 +40,7 @@ Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb)
 		(float)anim->frameSize.x / 2,
 		(float)anim->frameSize.y / 2 });
 	anim->currentFrame = 0;
-	anim->spriteSheetStructure = malloc(15);
+	anim->spriteSheetStructure = (char*) malloc(15);
 
 	return anim;
 }
@@ -246,13 +246,13 @@ void AnimationStop(Animation* _anim)
 
 Animation* AnimationCopy(const Animation* _animation)
 {
-	Animation* dest = malloc(sizeof(*_animation));
+	Animation* dest = (Animation*) malloc(sizeof(*_animation));
 	if (dest != NULL)
 	{
 		memcpy(dest, _animation, sizeof(*_animation));
-		dest->Sprite = sfSprite_copy(_animation->Sprite);
-		dest->SpriteSheet = sfTexture_copy(_animation->SpriteSheet);
-		dest->SpriteSheetStructure = malloc(15);
+		dest->sprite = sfSprite_copy(_animation->sprite);
+		dest->spriteSheet = sfTexture_copy(_animation->spriteSheet);
+		dest->spriteSheetStructure = (char*) malloc(15);
 		strcpy_s(
 			dest->spriteSheetStructure,
 			15,
