@@ -35,6 +35,14 @@ typedef struct Animation Animation;
 Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb);
 
 //////////////////////////////////////////////////////////////
+/// @brief Set the flipping state of an Animation
+/// 
+/// @param _anim Animation object
+/// 
+//////////////////////////////////////////////////////////////
+void AnimationSetFlipState(Animation* _anim);
+
+//////////////////////////////////////////////////////////////
 /// @brief Update an animation
 /// 
 /// @param _anim Animation object
@@ -42,6 +50,13 @@ Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb);
 /// @param _dt Delta time
 //////////////////////////////////////////////////////////////
 void AnimationUpdate(Animation* _anim, float _dt);
+
+//////////////////////////////////////////////////////////////
+/// @brief Update an animation sprite with its current frame
+/// 
+/// @param _anim Animation object
+//////////////////////////////////////////////////////////////
+void AnimationFrameUpdate(Animation* _anim);
 
 //////////////////////////////////////////////////////////////
 /// @brief Draw an animation
@@ -56,6 +71,14 @@ void AnimationDraw(
 	const sfRenderWindow* _window,
 	const Animation* _anim,
 	const sfRenderStates* _states);
+
+//draw anim on render tex
+void AnimationDrawRenderTex(
+	const sfRenderTexture* _renderTex,
+	const Animation* _anim,
+	const sfRenderStates* _states);
+
+void AnimationSoftDestroy(Animation* _anim);
 
 ////////////////////////////////////////////////////////////
 /// @brief Destroy an existing animation
@@ -73,6 +96,15 @@ void AnimationDestroy(Animation* _anim);
 /// @param _state State of the animation
 //////////////////////////////////////////////////////////////
 void AnimationPlay(Animation* _anim, unsigned char _state);
+
+//////////////////////////////////////////////////////////////
+/// @brief Define the actual frame of an animation
+/// 
+/// @param _anim Animation object
+/// 
+/// @param _frame Frame to set
+//////////////////////////////////////////////////////////////
+void AnimationSetFrame(Animation* _anim, unsigned char _frame);
 
 //////////////////////////////////////////////////////////////
 /// @brief Pause an animation
@@ -218,6 +250,10 @@ void AnimationSetFrameSize(Animation* _anim, sfVector2u _frameSize);
 //////////////////////////////////////////////////////////////
 void AnimationSetFramesNb(Animation* _anim, unsigned char _framesNb);
 
+void AnimationSetClock(Animation* _anim, float _clock);
+
+float AnimationGetClock(Animation* _anim);
+
 //////////////////////////////////////////////////////////////
 /// @brief Get the frame rate of an animation
 /// 
@@ -228,6 +264,8 @@ void AnimationSetFramesNb(Animation* _anim, unsigned char _framesNb);
 /// @return Frame rate of the animation
 //////////////////////////////////////////////////////////////
 float AnimationGetFramerate(Animation* _anim);
+
+Animation* AnimationSmartCopy(const Animation* _animation);
 
 ////////////////////////////////////////////////////////////
 /// @brief Copy an existing animation
@@ -450,3 +488,5 @@ sfFloatRect AnimationGetLocalBounds(const Animation* _animation);
 ///
 ////////////////////////////////////////////////////////////
 sfFloatRect AnimationGetGlobalBounds(const Animation* _animation);
+
+sfIntRect AnimationGetTextureRect(const Animation* _animation);

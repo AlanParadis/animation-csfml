@@ -23,16 +23,42 @@ struct Animation
 	sfVector2f scale;
 };
 
-//////////////////////////////////////////////////////////////
-/// @brief Update an animation sprite with its current frame
-/// 
-/// @param _anim Animation object
-//////////////////////////////////////////////////////////////
-static void AnimationFrameUpdate(Animation* _anim);
+void AnimationSetFlipState(Animation* _anim)
+{
+	// Flip sprite according to the state of the animation
+	if (_anim->state & FLIP_X && _anim->state & FLIP_Y)
+	{
+		sfSprite_setScale(_anim->sprite,
+			(sfVector2f) {
+			-_anim->scale.x, -_anim->scale.y
+		});
+	}
+	else if (_anim->state & FLIP_X)
+	{
+		sfSprite_setScale(_anim->sprite,
+			(sfVector2f) {
+			-_anim->scale.x, _anim->scale.y
+		});
+	}
+	else if (_anim->state & FLIP_Y)
+	{
+		sfSprite_setScale(_anim->sprite,
+			(sfVector2f) {
+			_anim->scale.x, -_anim->scale.y
+		});
+	}
+	else
+	{
+		sfSprite_setScale(_anim->sprite,
+			(sfVector2f) {
+			_anim->scale.x, _anim->scale.y
+		});
+	}
+}
 
 Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb)
 {
-	Animation* anim = (Animation*) malloc(sizeof(Animation));
+	Animation* anim = (Animation*)malloc(sizeof(Animation));
 	if (anim == NULL)
 	{
 		printf("Error during memory allocation !");
@@ -55,88 +81,20 @@ Animation* AnimationCreate(sfVector2u _frameSize, unsigned char _framesNb)
 	sfSprite_setOrigin(anim->sprite,
 		(sfVector2f) {
 		(float)anim->frameSize.x / 2,
-		(float)anim->frameSize.y / 2 });
+			(float)anim->frameSize.y / 2
+	});
 	anim->currentFrame = 0;
-	anim->spriteSheetStructure = (char*) malloc(15);
+	anim->spriteSheetStructure = (char*)malloc(15);
 
 	return anim;
 }
 
-static void AnimationFrameUpdate(Animation* _anim)
-{
-	// The position of the top left corner of the next frame in the texture
-	sfVector2i framePos = {
-			_anim->frameSize.x * (int)_anim->currentFrame,
-			(_anim->frameSize.y * (int)_anim->currentFrame) };
-
-	// Select the next frame according to the sprite sheet structure
-	if (strcmp(_anim->spriteSheetStructure, "horizontal") == 0)
-	{
-		sfSprite_setTextureRect(
-			_anim->sprite,
-			(sfIntRect) {
-				framePos.x,
-				0,
-				_anim->frameSize.x,
-				_anim->frameSize.y });
-	}
-	else if (strcmp(_anim->spriteSheetStructure, "vertical") == 0)
-	{
-		sfSprite_setTextureRect(
-			_anim->sprite,
-			(sfIntRect) {
-				0,
-				framePos.y,
-				_anim->frameSize.x,
-				_anim->frameSize.y });
-	}
-	else if (strcmp(_anim->spriteSheetStructure, "block") == 0)
-	{
-		// Block length in pixel
-		sfVector2i blockPixelSize = {
-			_anim->blockLength.x * (int)_anim->frameSize.x,
-			_anim->blockLength.y * (int)_anim->frameSize.y
-		};
-
-		sfIntRect frameRect = {
-			framePos.x % blockPixelSize.x,
-			(int)ceil(_anim->currentFrame / _anim->blockLength.x)* _anim->frameSize.y,
-			_anim->frameSize.x,
-			_anim->frameSize.y
-		};
-
-		sfSprite_setTextureRect(_anim->sprite, frameRect);
-	}
-}
-
 void AnimationUpdate(Animation* _anim, float _dt)
 {
-	// Flip sprite according to the state of the animation
-	if (_anim->state & FLIP_X && _anim->state & FLIP_Y)
-	{
-		sfSprite_setScale(_anim->sprite,
-			(sfVector2f) { -_anim->scale.x, -_anim->scale.y });
-	}
-	else if (_anim->state & FLIP_X)
-	{
-		sfSprite_setScale(_anim->sprite,
-			(sfVector2f) { -_anim->scale.x, _anim->scale.y });
-	}
-	else if (_anim->state & FLIP_Y)
-	{
-		sfSprite_setScale(_anim->sprite,
-			(sfVector2f) { _anim->scale.x, -_anim->scale.y });
-	}
-	else
-	{
-		sfSprite_setScale(_anim->sprite,
-			(sfVector2f) { _anim->scale.x, _anim->scale.y });
-	}
-		
+	AnimationSetFlipState(_anim);
 
 	if (_anim->isPlaying)
 	{
-
 		if (_anim->state & REVERSED)
 		{
 			// Play animation in reverse 
@@ -199,8 +157,56 @@ void AnimationUpdate(Animation* _anim, float _dt)
 				_anim->currentFrame = nextFrame;
 			}
 		}
-
 		AnimationFrameUpdate(_anim);
+	}
+}
+
+static void AnimationFrameUpdate(Animation* _anim)
+{
+	// The position of the top left corner of the next frame in the texture
+	sfVector2i framePos = {
+			_anim->frameSize.x * (int)_anim->currentFrame,
+			(_anim->frameSize.y * (int)_anim->currentFrame) };
+
+	// Select the next frame according to the sprite sheet structure
+	if (strcmp(_anim->spriteSheetStructure, "horizontal") == 0)
+	{
+		sfSprite_setTextureRect(
+			_anim->sprite,
+			(sfIntRect) {
+			framePos.x,
+				0,
+				_anim->frameSize.x,
+				_anim->frameSize.y
+		});
+	}
+	else if (strcmp(_anim->spriteSheetStructure, "vertical") == 0)
+	{
+		sfSprite_setTextureRect(
+			_anim->sprite,
+			(sfIntRect) {
+			0,
+				framePos.y,
+				_anim->frameSize.x,
+				_anim->frameSize.y
+		});
+	}
+	else if (strcmp(_anim->spriteSheetStructure, "block") == 0)
+	{
+		// Block length in pixel
+		sfVector2i blockPixelSize = {
+			_anim->blockLength.x * (int)_anim->frameSize.x,
+			_anim->blockLength.y * (int)_anim->frameSize.y
+		};
+
+		sfIntRect frameRect = {
+			framePos.x % blockPixelSize.x,
+			(int)ceil(_anim->currentFrame / _anim->blockLength.x) * _anim->frameSize.y,
+			_anim->frameSize.x,
+			_anim->frameSize.y
+		};
+
+		sfSprite_setTextureRect(_anim->sprite, frameRect);
 	}
 }
 
@@ -213,12 +219,33 @@ void AnimationDraw(
 		(sfRenderWindow*)_window, _anim->sprite, _states);
 }
 
+void AnimationDrawRenderTex(
+	const sfRenderTexture* _renderTex,
+	const Animation* _anim,
+	const sfRenderStates* _states)
+{
+	sfRenderTexture_drawSprite(
+		(sfRenderTexture*)_renderTex, _anim->sprite, _states);
+}
+
 void AnimationDestroy(Animation* _anim)
 {
 	sfTexture_destroy((sfTexture*)_anim->spriteSheet);
+	_anim->spriteSheet = NULL;
 	sfSprite_destroy(_anim->sprite);
+	_anim->sprite = NULL;
 	free(_anim->spriteSheetStructure);
+	_anim->spriteSheetStructure = NULL;
 	free(_anim);
+	_anim = NULL;
+}
+
+void AnimationSoftDestroy(Animation* _anim)
+{
+	sfSprite_destroy(_anim->sprite);
+	_anim->sprite = NULL;
+	free(_anim);
+	_anim = NULL;
 }
 
 void AnimationPlay(Animation* _anim, unsigned char _state)
@@ -227,13 +254,13 @@ void AnimationPlay(Animation* _anim, unsigned char _state)
 	_anim->state = _state;
 	if (_anim->state & REVERSED)
 	{
-		_anim->clock -= _anim->duration;
+		_anim->clock = _anim->duration;
 	}
 }
 
 void AnimationPause(Animation* _anim)
 {
-	_anim->isPlaying = sfFalse; 
+	_anim->isPlaying = sfFalse;
 }
 
 void AnimationRewind(Animation* _anim)
@@ -261,15 +288,30 @@ void AnimationStop(Animation* _anim)
 	AnimationFrameUpdate(_anim);
 }
 
+Animation* AnimationSmartCopy(const Animation* _animation)
+{
+	Animation* dest = (Animation*)malloc(sizeof(*_animation));
+	if (dest != NULL)
+	{
+		memcpy(dest, _animation, sizeof(*_animation));
+		dest->sprite = sfSprite_copy(_animation->sprite);
+	}
+	else
+	{
+		printf("Error during copying animation !");
+	}
+	return dest;
+}
+
 Animation* AnimationCopy(const Animation* _animation)
 {
-	Animation* dest = (Animation*) malloc(sizeof(*_animation));
+	Animation* dest = (Animation*)malloc(sizeof(*_animation));
 	if (dest != NULL)
 	{
 		memcpy(dest, _animation, sizeof(*_animation));
 		dest->sprite = sfSprite_copy(_animation->sprite);
 		dest->spriteSheet = sfTexture_copy(_animation->spriteSheet);
-		dest->spriteSheetStructure = (char*) malloc(15);
+		dest->spriteSheetStructure = (char*)malloc(15);
 		if (dest->spriteSheetStructure != NULL)
 		{
 			strcpy_s(
@@ -277,7 +319,7 @@ Animation* AnimationCopy(const Animation* _animation)
 				15,
 				_animation->spriteSheetStructure);
 		}
-		
+
 	}
 	else
 	{
@@ -287,9 +329,9 @@ Animation* AnimationCopy(const Animation* _animation)
 }
 
 // Getters
-float AnimationGetDuration(const Animation* _anim) 
+float AnimationGetDuration(const Animation* _anim)
 {
-	return _anim->duration; 
+	return _anim->duration;
 }
 
 unsigned char AnimationGetCurrentFrame(const Animation* _anim)
@@ -297,24 +339,29 @@ unsigned char AnimationGetCurrentFrame(const Animation* _anim)
 	return _anim->currentFrame;
 }
 
-sfBool AnimationIsPlaying(const Animation* _anim) 
+sfBool AnimationIsPlaying(const Animation* _anim)
 {
-	return _anim->isPlaying; 
+	return _anim->isPlaying;
 }
 
-unsigned char AnimationGetState(const Animation* _anim) 
+float AnimationGetClock(Animation* _anim)
 {
-	return _anim->state; 
+	return _anim->clock;
 }
 
-sfVector2u AnimationGetFrameSize(Animation* _anim) 
+unsigned char AnimationGetState(const Animation* _anim)
+{
+	return _anim->state;
+}
+
+sfVector2u AnimationGetFrameSize(Animation* _anim)
 {
 	return _anim->frameSize;
 }
 
-unsigned char AnimationGetFramesNb(Animation* _anim) 
+unsigned char AnimationGetFramesNb(Animation* _anim)
 {
-	return _anim->framesNb; 
+	return _anim->framesNb;
 }
 
 float AnimationGetFramerate(Animation* _anim)
@@ -372,6 +419,11 @@ sfFloatRect AnimationGetGlobalBounds(const Animation* _animation)
 	return sfSprite_getGlobalBounds(_animation->sprite);
 }
 
+sfIntRect AnimationGetTextureRect(const Animation* _animation)
+{
+	return (sfSprite_getTextureRect(_animation->sprite));
+}
+
 // Setters
 void AnimationSetSpriteSheet(
 	Animation* _anim,
@@ -390,7 +442,7 @@ void AnimationSetSpriteSheet(
 	else
 		_anim->blockLength = (sfVector2u){ 0, 0 };
 
-	strcpy_s(_anim->spriteSheetStructure,15,_structure);
+	strcpy_s(_anim->spriteSheetStructure, 15, _structure);
 
 	// Surface area for the sprite sheet
 	const sfIntRect area;
@@ -414,7 +466,7 @@ void AnimationSetSpriteSheet(
 			_anim->frameSize.y * (int)_anim->framesNb
 		};
 	}
-	else if (strcmp(_anim->spriteSheetStructure, "block")  == 0)
+	else if (strcmp(_anim->spriteSheetStructure, "block") == 0)
 	{
 		*(sfIntRect*)&area = (sfIntRect){
 			_anim->animationOffset.x,
@@ -437,8 +489,15 @@ void AnimationSetSpriteSheet(
 		sfSprite_setTexture(_anim->sprite, _anim->spriteSheet, sfTrue);
 		sfSprite_setTextureRect(
 			_anim->sprite,
-			(sfIntRect) { 0, 0, _anim->frameSize.x, _anim->frameSize.y });
+			(sfIntRect) {
+			0, 0, _anim->frameSize.x, _anim->frameSize.y
+		});
 	}
+}
+
+void AnimationSetFrame(Animation* _anim, unsigned char _frame)
+{
+	_anim->currentFrame = _frame;
 }
 
 void AnimationSetDuration(Animation* _anim, float _duration)
@@ -449,6 +508,11 @@ void AnimationSetDuration(Animation* _anim, float _duration)
 void AnimationSetFramerate(Animation* _anim, float _framerate)
 {
 	_anim->duration = (float)(_anim->framesNb) / _framerate;
+}
+
+void AnimationSetClock(Animation* _anim, float _clock)
+{
+	_anim->clock = _clock;
 }
 
 void AnimationSetState(Animation* _anim, unsigned char _state)
