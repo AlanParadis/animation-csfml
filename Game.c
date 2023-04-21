@@ -45,8 +45,35 @@ static void GameEvents(sfRenderWindow* _window)
 					AnimationPlay(anim, AnimationGetState(anim));
 				}
 				break;
-
-			default:
+			// backspace reverse animation
+			case sfKeyBackspace:
+				if (AnimationIsPlaying(anim))
+				{
+					AnimationStop(anim);
+					AnimationPlay(anim, REVERSED | LOOPED);
+				}
+				else
+				{
+					AnimationStop(anim);
+					AnimationPlay(anim, DEFAULT | LOOPED);
+				}// arrow keys flip animation
+				break;
+			case sfKeyUp:
+				// add to FLIP_Y state
+				AnimationSetState(anim, AnimationGetState(anim) | FLIP_Y);
+				break;
+			case sfKeyDown:
+				// remove FLIP_Y state
+				AnimationSetState(anim, AnimationGetState(anim) & ~FLIP_Y);
+				break;
+			case sfKeyRight:
+				// add to FLIP_X state
+				AnimationSetState(anim, AnimationGetState(anim) | FLIP_X);
+				break;
+			case sfKeyLeft:
+				// remove FLIP_X state
+				AnimationSetState(anim, AnimationGetState(anim) & ~FLIP_X);
+		    default:
 				break;
 			}
 			break;
